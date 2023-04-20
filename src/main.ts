@@ -3,6 +3,9 @@ import { Viewer } from "./lib/ViewerThree";
 
 var domdiv = document.getElementById("viewer")! as HTMLDivElement;
 var buttonWireframe = document.getElementById("wireframe-button")! as HTMLInputElement;
+var buttonResetRotation = document.getElementById("reset-rot")! as HTMLButtonElement;
+var buttonResetPosition = document.getElementById("reset-pos")! as HTMLButtonElement;
+var buttonResetZoom = document.getElementById("reset-zoom")! as HTMLButtonElement;
 
 var buttonsSetup = () => {
 	/// Setting values
@@ -10,6 +13,9 @@ var buttonsSetup = () => {
 
 	/// Adding events
 	buttonWireframe.addEventListener("click", () => { test.wireframe = buttonWireframe.checked });
+	buttonResetRotation.addEventListener("click", () => { test.ResetRotation() });
+	buttonResetPosition.addEventListener("click", () => { test.ResetPosition() });
+	buttonResetZoom.addEventListener("click", () => { test.ResetZoom() });
 }
 
 var test = new Viewer({

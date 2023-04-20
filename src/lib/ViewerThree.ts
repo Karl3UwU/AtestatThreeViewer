@@ -54,18 +54,17 @@ class Viewer {
         }, () => { if(this.onLoad) this.onLoad(); });
     }
 
+    public ResetRotation() {
+        this.controlsLoader.ResetRotation();
+    }
+    public ResetPosition() {
+        this.controlsLoader.ResetPosition();
+    }
+    public ResetZoom() {
+        this.controlsLoader.ResetZoom();
+    }
+
     /// Get Set
-    // get object() {
-    //     return this.objectLoader;
-    // }
-
-    // get scene() {
-    //     return this.sceneLoader;
-    // }
-
-    // get camera() {
-    //     return this.controlsLoader;
-    // }
 
     /// WIREFRAME
     get wireframe() {

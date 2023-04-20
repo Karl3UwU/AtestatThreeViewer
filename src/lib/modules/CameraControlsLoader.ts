@@ -226,11 +226,11 @@ class CameraControlsLoader {
             /// Based on mouse button
             if(event.ctrlKey) {
                 if(event.button === 0)
-                    this.currentRotation = {horizontal: 0, vertical: 0};
+                    this.ResetRotation();
                 else if(event.button === 1)
-                    this.currentZoom = this.cameraSettings.recommCameraDist;
+                    this.ResetZoom();
                 else if(event.button === 2)
-                    this.pivot.position.set(0, 0, 0);
+                    this.ResetPosition();
             }
             if(event.button === 0) { /// Deprecated but WHY IS IT DEPRECATED LITERALLY MOST USEFUL
                 oldRot.horizontal = this.cameraSettings.currentRotation.horizontal;
@@ -327,6 +327,18 @@ class CameraControlsLoader {
         this.camera.position.z = this.cameraSettings.currentZoom;
 
         window.requestAnimationFrame(() => this.Tick());
+    }
+    public ResetRotation() {
+        this.currentRotation = {
+            vertical: 0,
+            horizontal: 0
+        };
+    }
+    public ResetPosition() {
+        this.pivot.position.set(0, 0, 0);
+    }
+    public ResetZoom() {
+        this.cameraSettings.currentZoom = this.cameraSettings.recommCameraDist;
     }
 
     /// GET SET
