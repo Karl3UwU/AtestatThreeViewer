@@ -93,6 +93,7 @@ button {
   	cursor: pointer;
   	transition: border-color 0.25s, color 0.5s;
 	outline: none;
+	-webkit-tap-highlight-color: transparent;
 }
 button:hover {
   	border-color: #646cff;
