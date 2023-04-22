@@ -21,7 +21,7 @@ dropZoneDiv.addEventListener("drop", (e) => {
 		return;
 	}
 	var reader = new FileReader();
-	reader.onload = (e) => {
+	reader.onload = () => {
 		LoadObject(reader.result!);
 	}
 	reader.readAsArrayBuffer(file);
