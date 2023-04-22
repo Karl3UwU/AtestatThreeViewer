@@ -12,7 +12,7 @@ var buttonResetPosition = document.getElementById("reset-pos")! as HTMLButtonEle
 var buttonResetZoom = document.getElementById("reset-zoom")! as HTMLButtonElement;
 var buttonTemplate = document.getElementById("template-button")! as HTMLButtonElement;
 
-dropZoneDiv.addEventListener("drop", (e) => {
+var handleDrop = (e: DragEvent) => {
 	buttonTemplate.disabled = true;
 	e.preventDefault();
 	var file = e.dataTransfer?.files[0]!;
@@ -20,12 +20,14 @@ dropZoneDiv.addEventListener("drop", (e) => {
 		alert("File is not .gltf");
 		return;
 	}
+	dropZoneDiv.removeEventListener("drop", handleDrop);
 	var reader = new FileReader();
 	reader.onload = () => {
 		LoadObject(reader.result!);
 	}
 	reader.readAsArrayBuffer(file);
-})
+}
+dropZoneDiv.addEventListener("drop", handleDrop)
 dropZoneDiv.addEventListener("dragover", (e) => {
 	e.preventDefault();
 })
