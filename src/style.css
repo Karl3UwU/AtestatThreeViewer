@@ -82,6 +82,7 @@ h1 {
 } */
 
 button {
+	position: relative;
   	border-radius: 8px;
   	border: 3px solid rgba(255, 255, 255, 0.25);
   	padding: 0.6em 1.2em;
@@ -91,14 +92,30 @@ button {
   	background-color: #1a1a1a;
   	cursor: pointer;
   	transition: border-color 0.25s, color 0.5s;
+	outline: none;
 }
 button:hover {
   	border-color: #646cff;
 	color:#c3ad0b;
 }
-button:focus,
-button:focus-visible {
-  	outline: 4px auto -webkit-focus-ring-color;
+button:active,
+button:focus {
+	border-color:#c3ad0b;
+}
+button:before {
+	content: "";
+	display: inline-block;
+	position: absolute;
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition: 0.2s;
+	z-index: -1;
+}
+button:focus:before {
+	box-shadow: 0px 0px 20px 0px #646cff;
 }
 
 .switch-container {
@@ -109,7 +126,7 @@ button:focus-visible {
 .slider-button {
 	position: relative;
 	display: inline-block;
-	width: 50px;
+	width: 60px;
 	height: 30px;
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
@@ -150,9 +167,9 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(16px);
-  -ms-transform: translateX(16px);
-  transform: translateX(16px);
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
   background-color: white;
   border-color: black;
 }
