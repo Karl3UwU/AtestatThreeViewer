@@ -65,8 +65,21 @@ h1 {
 }
 .button-container {
 	width: 250px;
-	/* height: 100%; */
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
 }
+@media only screen and (max-width: 1400px) {
+	.button-container {
+		flex-direction: row;
+		width: 100%;
+	}
+}
+/* .button-container > * {
+	padding: 5px;
+} */
 
 button {
   	border-radius: 8px;
