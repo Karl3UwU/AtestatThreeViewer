@@ -5,7 +5,7 @@ import { Settings, rotation } from "./modules/Settings";
 
 interface ViewerParameters {
     div: HTMLDivElement,
-    objectPath: string,
+    objectPath: string | ArrayBuffer,
     settings?: Settings,
     onLoad?: Function
 }

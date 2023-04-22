@@ -36,6 +36,10 @@ class SceneLoader {
         this.CopySettings(sceneParams.settings);
         if(onLoadFunction)
             this.onLoad = onLoadFunction;
+            if(document.readyState === "complete") { /// first we check if the window is already loaded
+                this.LoadSceneAndDOM();
+                return;
+            } /// if the window has been already loaded, this event will never fire
         window.addEventListener("load", () => { this.LoadSceneAndDOM(); });
     }
     private CopySettings(sceneSettings?: SceneSettings): void {

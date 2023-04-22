@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { ObjectSettings } from "./Settings";
 
 const gltfLoader = new GLTFLoader();
@@ -20,12 +20,12 @@ function CenterObject(object: THREE.Group, cbFunc?: Function): void {
 }
 
 interface ObjectLoaderParams {
-    objectPath: string,
+    objectPath: string | ArrayBuffer,
     settings?: ObjectSettings
 }
 
 class ObjectLoader {
-    private objectPath: string;
+    private objectPath: string | ArrayBuffer;
     public object: THREE.Group;
     public boundingBox!: THREE.Mesh;
     private onLoad?: Function;
@@ -46,8 +46,8 @@ class ObjectLoader {
         this.settings.flatShade = settings?.flatShade !== undefined ? settings.flatShade : false;
         this.LoadObjectFromPath(this.objectPath);
     }
-    private LoadObjectFromPath(objectPath: string): void {
-        gltfLoader.load(objectPath, (loaded) => {
+    private LoadObjectFromPath(objectPath: string | ArrayBuffer): void {
+        var onLoad = (loaded: GLTF) => {
             while(loaded.scene.children.length)
                 this.object.add(loaded.scene.children[0]);
             var traverseIndex = 0;
@@ -62,7 +62,11 @@ class ObjectLoader {
                 traverseIndex++;
             })
             this.CreateBoundingBox();
-        })
+        }
+        if(typeof objectPath === "string")
+            gltfLoader.load(objectPath, onLoad);
+        else
+            gltfLoader.parse(objectPath, "", onLoad);
     }
     private CreateBoundingBox() {
         /// Get the min and max positions of the object
