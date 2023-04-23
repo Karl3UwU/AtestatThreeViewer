@@ -184,7 +184,7 @@ class CameraControlsLoader {
         this.pivot.rotation.order = "ZYX";
         this.pivot.add(this.camera);
         this.CameraCalculateDistance();
-        if(this.isMobile) this.LoadTouchControls2();
+        if(this.isMobile) this.LoadTouchControls();
         else this.LoadMouseControls();
         this.Tick();
     }
@@ -282,7 +282,7 @@ class CameraControlsLoader {
             this.ClampZoom();
         })
     }
-    private LoadTouchControls2() {
+    private LoadTouchControls() {
         var touches: Touch[] = [];
         var oldRotTouch: MousePos = {x: 0, y: 0}, deltaRotTouch: MousePos = {x: 0, y: 0};
         var oldRot: Rotation = {vertical: 0, horizontal: 0}, deltaRot: Rotation = {vertical: 0, horizontal: 0};
@@ -305,11 +305,20 @@ class CameraControlsLoader {
                 horizontalCorrection = (verticalCheck > 0.5 && verticalCheck < 1.5) ? -1 : 1;
             }
             else if(touches.length === 2) {
-                var x = Math.abs(touches[1].clientX - touches[0].clientX);
-                var y = Math.abs(touches[1].clientY - touches[0].clientY);
-                anchorLength = Math.sqrt(x*x + y*y);
-                oldDistance = this.cameraSettings.currentZoom;
-
+                /// Zoom
+                if(this.cameraSettings.canZoom) {
+                    var x = Math.abs(touches[1].clientX - touches[0].clientX);
+                    var y = Math.abs(touches[1].clientY - touches[0].clientY);
+                    anchorLength = Math.sqrt(x*x + y*y);
+                    oldDistance = this.cameraSettings.currentZoom;
+                }
+                /// Position
+                if(this.cameraSettings.canPan) {
+                    oldPosition = {
+                        x: (touches[0].clientX + touches[1].clientX)/2,
+                        y: (touches[0].clientY + touches[1].clientY)/2
+                    }
+                }
             }
         })
         this.canvas.addEventListener("touchmove", (event) => {
@@ -326,16 +335,32 @@ class CameraControlsLoader {
             }
             else if(touches.length === 2) {
                 /// Zoom
-                for(var i=0; i<event.changedTouches.length; i++) {
-                    var index = event.changedTouches[i].identifier;
-                    touches.splice(index, 1, event.changedTouches[i]);
+                if(this.cameraSettings.canZoom) {
+                    for(var i=0; i<event.changedTouches.length; i++) {
+                        var index = event.changedTouches[i].identifier;
+                        touches.splice(index, 1, event.changedTouches[i]);
+                    }
+                    var x = Math.abs(touches[1].clientX - touches[0].clientX);
+                    var y = Math.abs(touches[1].clientY - touches[0].clientY);
+                    newLength = Math.sqrt(x*x + y*y);
+                    this.cameraSettings.currentZoom = oldDistance-(((newLength/anchorLength)-1)*(this.cameraSettings.recommCameraDist));
+                    this.ClampZoom();
                 }
-                const x = Math.abs(touches[1].clientX - touches[0].clientX);
-                const y = Math.abs(touches[1].clientY - touches[0].clientY);
-                newLength = Math.sqrt(x*x + y*y);
-                this.cameraSettings.currentZoom = oldDistance-(((newLength/anchorLength)-1)*(this.cameraSettings.recommCameraDist))
                 /// Position
-                oldPosition;
+                if(this.cameraSettings.canPan) {
+                    var newPosition: MousePos = {
+                        x: (event.touches[0].clientX + event.touches[1].clientX)/2,
+                        y: (event.touches[0].clientY + event.touches[1].clientY)/2
+                    }
+                    var deltaPosition: MousePos = {
+                        x: oldPosition.x - newPosition.x,
+                        y: oldPosition.y - newPosition.y
+                    }
+                    this.pivot.translateX((deltaPosition.x/normalizeSize)*this.cameraSettings.averageObjectLength*2*(this.camera.position.z/this.cameraSettings.recommCameraDist)*this.CalculatePanFalloff());
+                    this.pivot.translateY(-(deltaPosition.y/normalizeSize)*this.cameraSettings.averageObjectLength*2*(this.camera.position.z/this.cameraSettings.recommCameraDist)*this.CalculatePanFalloff());
+                    oldPosition = newPosition;
+                }
+
             }
         })
         this.canvas.addEventListener("touchend", (event) => {
