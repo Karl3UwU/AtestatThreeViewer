@@ -184,7 +184,7 @@ class CameraControlsLoader {
         this.pivot.rotation.order = "ZYX";
         this.pivot.add(this.camera);
         this.CameraCalculateDistance();
-        if(this.isMobile) this.LoadTouchControls();
+        if(this.isMobile) this.LoadTouchControls2();
         else this.LoadMouseControls();
         this.Tick();
     }
@@ -318,6 +318,64 @@ class CameraControlsLoader {
         this.canvas.addEventListener("touchend", (event) => {
             if(event.touches.length > 0) return;
             document.body.style.overflow = defaultBodyOverflow;
+        })
+    }
+    private LoadTouchControls2() {
+        var touches: Touch[] = [];
+        var oldRotTouch: MousePos = {x: 0, y: 0}, deltaRotTouch: MousePos = {x: 0, y: 0};
+        var oldRot: Rotation = {vertical: 0, horizontal: 0}, deltaRot: Rotation = {vertical: 0, horizontal: 0};
+        var anchorLength: number, newLength: number;
+        var oldDistance: number, oldPosition: MousePos = {x: 0, y: 0};
+        var normalizeSize: number;
+        var horizontalCorrection: 1 | -1 = 1;
+        this.canvas.addEventListener("touchstart", (event) => {
+            if(touches.length >= 2) return;
+            touches.push(event.changedTouches[0]);
+            normalizeSize = Math.min(this.canvas.clientWidth, this.canvas.clientHeight);
+            if(touches.length === 1) {
+                oldRot.horizontal = this.cameraSettings.currentRotation.horizontal;
+                oldRot.vertical = this.cameraSettings.currentRotation.vertical;
+                oldRotTouch = {
+                    x: touches[0].clientX,
+                    y: touches[0].clientY
+                }
+                var verticalCheck = Math.abs(oldRot.vertical)%2;
+                horizontalCorrection = (verticalCheck > 0.5 && verticalCheck < 1.5) ? -1 : 1;
+            }
+            else if(touches.length === 2) {
+                var x = Math.abs(touches[1].clientX - touches[0].clientX);
+                var y = Math.abs(touches[1].clientY - touches[0].clientY);
+                anchorLength = Math.sqrt(x*x + y*y);
+                oldDistance = this.cameraSettings.currentZoom;
+
+            }
+        })
+        this.canvas.addEventListener("touchmove", (event) => {
+            event.preventDefault();
+            if(touches.length === 1) {
+                if(!this.cameraSettings.canRotate) return;
+                deltaRotTouch.x = event.touches[0].clientX - oldRotTouch.x;
+                deltaRotTouch.y = event.touches[0].clientY - oldRotTouch.y;
+                deltaRot.horizontal = deltaRotTouch.x/normalizeSize;
+                deltaRot.vertical = deltaRotTouch.y/normalizeSize;
+                this.cameraSettings.currentRotation.vertical = oldRot.vertical - deltaRot.vertical;
+                this.cameraSettings.currentRotation.horizontal = oldRot.horizontal - deltaRot.horizontal*horizontalCorrection;
+                this.ClampRotation();
+            }
+            else if(touches.length === 2) {
+                for(var i=0; i<event.changedTouches.length; i++) {
+                    var index = event.changedTouches[i].identifier;
+                    touches.splice(index, 1, event.changedTouches[i]);
+                }
+                const x = Math.abs(touches[1].clientX - touches[0].clientX);
+                const y = Math.abs(touches[1].clientY - touches[0].clientY);
+                newLength = Math.sqrt(x*x + y*y);
+                this.cameraSettings.currentZoom = oldDistance-(((newLength/anchorLength)-1)*(this.cameraSettings.recommCameraDist))
+            }
+        })
+        this.canvas.addEventListener("touchend", (event) => {
+            touches.splice(touches.indexOf(event.changedTouches[0]), 1);
+            if(touches.length === 1) touches = [];
         })
     }
     private Tick() {
