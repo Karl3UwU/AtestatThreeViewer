@@ -80,11 +80,6 @@ var LoadObject = (objectPath: string | ArrayBuffer) => {
 			camera: {
 				focusDisplay: false,
 			},
-			object: {
-				wireframe: false,
-				flatShade: false,
-				boundBox: false
-			}
 		},
 		onLoad: buttonsSetup
 	});
