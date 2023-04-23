@@ -343,7 +343,7 @@ class CameraControlsLoader {
                     var x = Math.abs(touches[1].clientX - touches[0].clientX);
                     var y = Math.abs(touches[1].clientY - touches[0].clientY);
                     newLength = Math.sqrt(x*x + y*y);
-                    this.cameraSettings.currentZoom = oldDistance-(((newLength/anchorLength)-1)*(this.cameraSettings.recommCameraDist));
+                    this.cameraSettings.currentZoom = oldDistance-(((newLength/anchorLength)-1)*oldDistance);
                     this.ClampZoom();
                 }
                 /// Position
