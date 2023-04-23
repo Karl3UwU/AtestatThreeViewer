@@ -222,7 +222,6 @@ class CameraControlsLoader {
             normalizeSize = Math.min(this.canvas.clientWidth, this.canvas.clientHeight);
             oldMouse.x = event.clientX;
             oldMouse.y = event.clientY;
-
             /// Based on mouse button
             if(event.ctrlKey) {
                 if(event.button === 0)
@@ -238,7 +237,7 @@ class CameraControlsLoader {
                 var verticalCheck = Math.abs(oldRot.vertical)%2;
                 horizontalCorrection = (verticalCheck > 0.5 && verticalCheck < 1.5) ? -1 : 1;
             }
-            else if(event.which === 3) {
+            else if(event.button === 2) {
                 document.body.style.cursor = "grab";
             }
         })
@@ -246,7 +245,6 @@ class CameraControlsLoader {
             if(!isDown) return;
             deltaMouse.x = event.clientX - oldMouse.x;
             deltaMouse.y = event.clientY - oldMouse.y;
-
             /// Based on mouse button
             if(event.which === 1) {
                 if(!this.cameraSettings.canRotate) return;
@@ -256,7 +254,7 @@ class CameraControlsLoader {
                 this.cameraSettings.currentRotation.horizontal = oldRot.horizontal - deltaRot.horizontal*horizontalCorrection;
                 this.ClampRotation();
             }
-            else if(event.which === 3) {
+            else if(event.which === 3) { /// event.button is 0 for both left and right click in this event for some reason
                 if(!this.cameraSettings.canPan) return;
                 this.pivot.translateX(-(deltaMouse.x/normalizeSize)*this.cameraSettings.averageObjectLength*2*(this.camera.position.z/this.cameraSettings.recommCameraDist)*this.CalculatePanFalloff());
                 this.pivot.translateY((deltaMouse.y/normalizeSize)*this.cameraSettings.averageObjectLength*2*(this.camera.position.z/this.cameraSettings.recommCameraDist)*this.CalculatePanFalloff());
@@ -388,6 +386,30 @@ class CameraControlsLoader {
     }
     set focusDisplay(value: boolean) {
         this.cameraSettings.focusDisplay = value;
+    }
+
+    /// CAN ROTATE
+    get canRotate(): boolean {
+        return this.cameraSettings.canRotate;
+    }
+    set canRotate(value: boolean) {
+        this.cameraSettings.canRotate = value;
+    }
+
+    /// CAN PAN
+    get canPan(): boolean {
+        return this.cameraSettings.canPan;
+    }
+    set canPan(value: boolean) {
+        this.cameraSettings.canPan = value;
+    }
+    
+    /// CAN ZOOM
+    get canZoom(): boolean {
+        return this.cameraSettings.canZoom;
+    }
+    set canZoom(value: boolean) {
+        this.cameraSettings.canZoom = value;
     }
 }
 

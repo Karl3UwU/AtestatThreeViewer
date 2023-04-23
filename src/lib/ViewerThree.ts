@@ -140,6 +140,30 @@ class Viewer {
     set focusDisplay(value: boolean) {
         this.controlsLoader.focusDisplay = value;
     }
+
+    /// CAN ROTATE
+    get canRotate(): boolean {
+        return this.controlsLoader.canRotate;
+    }
+    set canRotate(value: boolean) {
+        this.controlsLoader.canRotate = value
+    }
+
+    /// CAN PAN
+    get canPan(): boolean {
+        return this.controlsLoader.canPan;
+    }
+    set canPan(value: boolean) {
+        this.controlsLoader.canPan = value
+    }
+
+    /// CAN ZOOM
+    get canZoom(): boolean {
+        return this.controlsLoader.canZoom;
+    }
+    set canZoom(value: boolean) {
+        this.controlsLoader.canZoom = value
+    }
 }
 
 export { Viewer };

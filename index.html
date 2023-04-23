@@ -4,10 +4,11 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Three Viewer</title>
+		<title>GLTF Viewer</title>
 	</head>
 	<body>
 		<div id="app">
+			<p id="info-text">Welcome to the GLTF Viewer project, made by Cotelea Carlo. To use this tool, you will need to export your 3D objects in a .gltf format. To load a .gltf file, drag & drop said file into the drop-zone. If you do not have any files to use, you can load the preview file by pressing on the "use preview" button.</p>
 			<div id="main-body">
 				<div id="first-buttons" class="button-container">
 					<label class="swtich">
@@ -37,13 +38,40 @@
 							</div>
 						</div>
 					</label>
+					<label class="swtich">
+						<div class="switch-container">
+							<a class="unselectable">Enable Rotation</a>
+							<div class="slider-button">
+								<input id="rotation-button" type="checkbox">
+								<span class="slider"></span>
+							</div>
+						</div>
+					</label>
+					<label class="swtich">
+						<div class="switch-container">
+							<a class="unselectable">Enable Panning</a>
+							<div class="slider-button">
+								<input id="panning-button" type="checkbox">
+								<span class="slider"></span>
+							</div>
+						</div>
+					</label>
+					<label class="swtich">
+						<div class="switch-container">
+							<a class="unselectable">Enable Zoom</a>
+							<div class="slider-button">
+								<input id="zoom-button" type="checkbox">
+								<span class="slider"></span>
+							</div>
+						</div>
+					</label>
 				</div>
 				<div id="three-container">
 					<div id="viewer" class="three-div">
 					</div>
 					<div id="gltf-dropzone" class="drop-zone">
 						<p>Drag a .gltf file to this <i>drop zone</i> or</p>
-						<button id="template-button">use template</button>
+						<button id="template-button">use preview</button>
 					</div>
 				</div>
 				<div id="last-buttons" class="button-container">

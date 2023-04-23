@@ -7,6 +7,9 @@ var dropZoneDiv = document.getElementById("gltf-dropzone")! as HTMLDivElement;
 var buttonWireframe = document.getElementById("wireframe-button")! as HTMLInputElement;
 var buttonFlatShade = document.getElementById("flatshade-button")! as HTMLInputElement;
 var buttonBoundBox = document.getElementById("boundbox-button")! as HTMLInputElement;
+var buttonEnableRotation = document.getElementById("rotation-button")! as HTMLInputElement;
+var buttonEnablePanning = document.getElementById("panning-button")! as HTMLInputElement;
+var buttonEnableZoom = document.getElementById("zoom-button")! as HTMLInputElement;
 var buttonResetRotation = document.getElementById("reset-rot")! as HTMLButtonElement;
 var buttonResetPosition = document.getElementById("reset-pos")! as HTMLButtonElement;
 var buttonResetZoom = document.getElementById("reset-zoom")! as HTMLButtonElement;
@@ -47,11 +50,17 @@ var buttonsSetup = () => {
 	buttonWireframe.checked = test.wireframe;
 	buttonFlatShade.checked = test.flatShade;
 	buttonBoundBox.checked = test.boundBox;
+	buttonEnableRotation.checked = test.canRotate;
+	buttonEnablePanning.checked = test.canPan;
+	buttonEnableZoom.checked = test.canZoom;
 
 	/// Adding events
 	buttonWireframe.addEventListener("click", () => { test.wireframe = buttonWireframe.checked });
 	buttonFlatShade.addEventListener("click", () => { test.flatShade = buttonFlatShade.checked });
 	buttonBoundBox.addEventListener("click", () => { test.boundBox = buttonBoundBox.checked });
+	buttonEnableRotation.addEventListener("click", () => { test.canRotate = buttonEnableRotation.checked });
+	buttonEnablePanning.addEventListener("click", () => { test.canPan = buttonEnablePanning.checked });
+	buttonEnableZoom.addEventListener("click", () => { test.canZoom = buttonEnableZoom.checked });
 	buttonResetRotation.addEventListener("click", () => { test.ResetRotation() });
 	buttonResetPosition.addEventListener("click", () => { test.ResetPosition() });
 	buttonResetZoom.addEventListener("click", () => { test.ResetZoom() });
