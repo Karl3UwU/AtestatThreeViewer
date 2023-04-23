@@ -46,7 +46,8 @@ h1 {
 
 #app {
   	margin: 0 auto;
-  	padding: 2rem;
+  	padding-left: 2rem;
+	padding-right: 2rem;
   	text-align: center;
   	width: 100%;
   	display: flex;
