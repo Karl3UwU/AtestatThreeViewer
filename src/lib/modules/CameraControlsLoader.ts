@@ -282,44 +282,6 @@ class CameraControlsLoader {
             this.ClampZoom();
         })
     }
-    private LoadTouchControls() {
-        var oldRot: Rotation = {horizontal: 0, vertical: 0}, deltaRot: Rotation = {horizontal: 0, vertical: 0};
-        var oldTouch: MousePos = {x: 0, y: 0}, deltaTouch: MousePos = {x: 0, y: 0};
-        var normalizeSize: number, defaultBodyOverflow: string = document.body.style.overflow;
-        var horizontalCorrection: 1 | -1 = 1;
-        this.canvas.addEventListener("touchstart", (event) => {
-            if(event.touches.length > 1) return;
-
-            document.body.style.overflow = "hidden";
-            normalizeSize = Math.min(this.canvas.clientWidth, this.canvas.clientHeight);
-            oldRot.horizontal = this.cameraSettings.currentRotation.horizontal;
-            oldRot.vertical = this.cameraSettings.currentRotation.vertical;
-
-            oldTouch = {
-                x: event.touches[0].clientX,
-                y: event.touches[0].clientY
-            }
-            var verticalCheck = Math.abs(oldRot.vertical)%2;
-            horizontalCorrection = (verticalCheck > 0.5 && verticalCheck < 1.5) ? -1 : 1;
-        })
-        this.canvas.addEventListener("touchmove", (event) => {
-            event.preventDefault();
-            if(event.touches.length > 1 || !this.cameraSettings.canRotate) return;
-
-            deltaTouch.x = event.touches[0].clientX - oldTouch.x;
-            deltaTouch.y = event.touches[0].clientY - oldTouch.y;
-            
-            deltaRot.horizontal = deltaTouch.x/normalizeSize;
-            deltaRot.vertical = deltaTouch.y/normalizeSize;
-            this.cameraSettings.currentRotation.vertical = oldRot.vertical - deltaRot.vertical;
-            this.cameraSettings.currentRotation.horizontal = oldRot.horizontal - deltaRot.horizontal*horizontalCorrection;
-            this.ClampRotation();
-        })
-        this.canvas.addEventListener("touchend", (event) => {
-            if(event.touches.length > 0) return;
-            document.body.style.overflow = defaultBodyOverflow;
-        })
-    }
     private LoadTouchControls2() {
         var touches: Touch[] = [];
         var oldRotTouch: MousePos = {x: 0, y: 0}, deltaRotTouch: MousePos = {x: 0, y: 0};
@@ -363,6 +325,7 @@ class CameraControlsLoader {
                 this.ClampRotation();
             }
             else if(touches.length === 2) {
+                /// Zoom
                 for(var i=0; i<event.changedTouches.length; i++) {
                     var index = event.changedTouches[i].identifier;
                     touches.splice(index, 1, event.changedTouches[i]);
@@ -371,6 +334,8 @@ class CameraControlsLoader {
                 const y = Math.abs(touches[1].clientY - touches[0].clientY);
                 newLength = Math.sqrt(x*x + y*y);
                 this.cameraSettings.currentZoom = oldDistance-(((newLength/anchorLength)-1)*(this.cameraSettings.recommCameraDist))
+                /// Position
+                oldPosition;
             }
         })
         this.canvas.addEventListener("touchend", (event) => {
