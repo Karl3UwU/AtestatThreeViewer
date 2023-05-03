@@ -186,6 +186,7 @@ class CameraControlsLoader {
         this.CameraCalculateDistance();
         if(this.isMobile) this.LoadTouchControls();
         else this.LoadMouseControls();
+        if('ontouchstart' in window) this.LoadMouseControls();
         this.Tick();
     }
     private ClampRotation() {
@@ -238,7 +239,8 @@ class CameraControlsLoader {
                 horizontalCorrection = (verticalCheck > 0.5 && verticalCheck < 1.5) ? -1 : 1;
             }
             else if(event.button === 2) {
-                document.body.style.cursor = "grab";
+                if(this.cameraSettings.canPan)
+                    document.body.style.cursor = "grab";
             }
         })
         window.addEventListener("mousemove", (event) => {

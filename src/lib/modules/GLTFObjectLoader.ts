@@ -5,7 +5,7 @@ import { ObjectSettings } from "./Settings";
 const gltfLoader = new GLTFLoader();
 
 function CenterObject(object: THREE.Group, cbFunc?: Function): void {
-    const objectBox = new THREE.Box3().setFromObject(object);
+    const objectBox = new THREE.Box3().setFromObject(object, true);
     const objectOffset = {
         x: (objectBox.max.x + objectBox.min.x) / 2,
         y: (objectBox.max.y + objectBox.min.y) / 2,
