@@ -43,7 +43,7 @@ type MousePos = {
 }
 
 class CameraControlsLoader {
-    private isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // private isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     private pivot!: THREE.Group;
     private cameraSettings: CameraSettingsExtra = {
         maxZoom: {
@@ -184,9 +184,8 @@ class CameraControlsLoader {
         this.pivot.rotation.order = "ZYX";
         this.pivot.add(this.camera);
         this.CameraCalculateDistance();
-        if(this.isMobile) this.LoadTouchControls();
-        else this.LoadMouseControls();
-        if('ontouchstart' in window) this.LoadMouseControls();
+        this.LoadTouchControls();
+        this.LoadMouseControls();
         this.Tick();
     }
     private ClampRotation() {
