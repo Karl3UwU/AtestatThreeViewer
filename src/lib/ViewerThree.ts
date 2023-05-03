@@ -1,7 +1,7 @@
 import { CenterObject, ObjectLoader } from "./modules/GLTFObjectLoader";
 import { SceneLoader } from "./modules/SceneLoader";
 import { CameraControlsLoader } from "./modules/CameraControlsLoader";
-import { Settings, rotation } from "./modules/Settings";
+import { Settings } from "./modules/Settings";
 
 interface ViewerParameters {
     div: HTMLDivElement,
