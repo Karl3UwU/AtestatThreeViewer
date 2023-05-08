@@ -231,7 +231,7 @@ class CameraControlsLoader {
                 else if(event.button === 2)
                     this.ResetPosition();
             }
-            if(event.button === 0) { /// Deprecated but WHY IS IT DEPRECATED LITERALLY MOST USEFUL
+            if(event.button === 0) {
                 oldRot.horizontal = this.cameraSettings.currentRotation.horizontal;
                 oldRot.vertical = this.cameraSettings.currentRotation.vertical;
                 var verticalCheck = Math.abs(oldRot.vertical)%2;
@@ -369,10 +369,13 @@ class CameraControlsLoader {
             if(touches.length === 1) touches = [];
         })
     }
-    private Tick() {
+    private Tick() { /// Called every frame
+        /// updating the rotation
         this.pivot.rotation.set(this.cameraSettings.currentRotation.vertical*Math.PI, this.cameraSettings.currentRotation.horizontal*Math.PI, 0);
+        /// updating the zoom
         this.camera.position.z = this.cameraSettings.currentZoom;
 
+        /// calling a new frame
         window.requestAnimationFrame(() => this.Tick());
     }
     public ResetRotation() {
