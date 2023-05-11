@@ -78,7 +78,7 @@ var LoadObject = (objectPath: string | ArrayBuffer) => {
 		objectPath: objectPath,
 		settings: {
 			camera: {
-				focusDisplay: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+				focusDisplay: !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
 			},
 		},
 		onLoad: buttonsSetup
