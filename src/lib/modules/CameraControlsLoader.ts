@@ -147,7 +147,7 @@ class CameraControlsLoader {
         const delta = Math.tan((25/180)*Math.PI);
         this.cameraSettings.recommCameraDist = (x / delta)*1.125;
         /// Set the camera near and far based of the max and min object length
-        this.camera.near = this.cameraSettings.minObjectLength/10000;
+        this.camera.near = this.cameraSettings.minObjectLength/100;
         this.camera.far = this.cameraSettings.maxObjectLength*100;
         /// If not already set in the settings, calculate max zoom and current zoom
         if(this.settings.maxZoom?.in !== undefined && typeof this.settings.maxZoom.in === "string")
